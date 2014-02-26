@@ -1,0 +1,480 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="AspNetDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="ContextKey" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="Model" Type="varbinary(max)" Nullable="false" />
+          <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="__RefactorLog">
+          <Key>
+            <PropertyRef Name="OperationKey" />
+          </Key>
+          <Property Name="OperationKey" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SYSTEM_ROLE">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="200" />
+          <Property Name="Discriminator" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="SYSTEM_USER">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="MiddleName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="NT_UserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="NT_Logon" Type="bit" />
+          <Property Name="ExpirePassword" Type="bit" />
+          <Property Name="PasswordExpiryDate" Type="date" />
+          <Property Name="Email" Type="nvarchar" MaxLength="200" />
+          <Property Name="EmailHash" Type="varchar" MaxLength="32" StoreGeneratedPattern="Computed" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="PasswordSalt" Type="varbinary" MaxLength="24" />
+          <Property Name="IsApproved" Type="bit" />
+          <Property Name="IsLockedOut" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="LastLoginDate" Type="datetime" />
+          <Property Name="LastActivityDate" Type="datetime" />
+          <Property Name="LastPasswordChangedDate" Type="datetime" />
+          <Property Name="LastLockoutDate" Type="datetime" />
+          <Property Name="FailedPasswordAttemptCount" Type="int" />
+          <Property Name="FailedPasswordAttemptWindowStart" Type="datetime" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="256" />
+          <Property Name="RegionID" Type="numeric" Precision="8" Scale="0" />
+          <Property Name="LanguageID" Type="numeric" Precision="8" Scale="0" />
+          <Property Name="DecimalSeperator" Type="varchar" MaxLength="1" />
+          <Property Name="DateFormat" Type="nvarchar" MaxLength="50" />
+          <Property Name="Discriminator" Type="nvarchar" MaxLength="128" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="SYSTEM_USER_CLAIM">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClaimType" Type="nvarchar(max)" />
+          <Property Name="ClaimValue" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="SYSTEM_USER_LOGIN">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="LoginProvider" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="LastUsedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="SYSTEM_USER_ROLE">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="DateFrom" Type="date" />
+          <Property Name="DateTo" Type="date" />
+          <Property Name="Discriminator" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <Association Name="FK_UserClaim_User">
+          <End Role="SYSTEM_USER" Type="Self.SYSTEM_USER" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SYSTEM_USER_CLAIM" Type="Self.SYSTEM_USER_CLAIM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SYSTEM_USER">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SYSTEM_USER_CLAIM">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserLogin_User">
+          <End Role="SYSTEM_USER" Type="Self.SYSTEM_USER" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SYSTEM_USER_LOGIN" Type="Self.SYSTEM_USER_LOGIN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SYSTEM_USER">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SYSTEM_USER_LOGIN">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserUserRole_User">
+          <End Role="SYSTEM_USER" Type="Self.SYSTEM_USER" Multiplicity="1" />
+          <End Role="SYSTEM_USER_ROLE" Type="Self.SYSTEM_USER_ROLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SYSTEM_USER">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SYSTEM_USER_ROLE">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserUserRole_UserRole">
+          <End Role="SYSTEM_ROLE" Type="Self.SYSTEM_ROLE" Multiplicity="1" />
+          <End Role="SYSTEM_USER_ROLE" Type="Self.SYSTEM_USER_ROLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SYSTEM_ROLE">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SYSTEM_USER_ROLE">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AspNetDatabaseModelStoreContainer">
+          <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="__RefactorLog" EntityType="Self.__RefactorLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SYSTEM_ROLE" EntityType="Self.SYSTEM_ROLE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SYSTEM_USER" EntityType="Self.SYSTEM_USER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SYSTEM_USER_CLAIM" EntityType="Self.SYSTEM_USER_CLAIM" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SYSTEM_USER_LOGIN" EntityType="Self.SYSTEM_USER_LOGIN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SYSTEM_USER_ROLE" EntityType="Self.SYSTEM_USER_ROLE" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_UserClaim_User" Association="Self.FK_UserClaim_User">
+            <End Role="SYSTEM_USER" EntitySet="SYSTEM_USER" />
+            <End Role="SYSTEM_USER_CLAIM" EntitySet="SYSTEM_USER_CLAIM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserLogin_User" Association="Self.FK_UserLogin_User">
+            <End Role="SYSTEM_USER" EntitySet="SYSTEM_USER" />
+            <End Role="SYSTEM_USER_LOGIN" EntitySet="SYSTEM_USER_LOGIN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserUserRole_User" Association="Self.FK_UserUserRole_User">
+            <End Role="SYSTEM_USER" EntitySet="SYSTEM_USER" />
+            <End Role="SYSTEM_USER_ROLE" EntitySet="SYSTEM_USER_ROLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserUserRole_UserRole" Association="Self.FK_UserUserRole_UserRole">
+            <End Role="SYSTEM_ROLE" EntitySet="SYSTEM_ROLE" />
+            <End Role="SYSTEM_USER_ROLE" EntitySet="SYSTEM_USER_ROLE" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AspNetDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="C__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ContextKey" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Model" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="C__RefactorLog">
+          <Key>
+            <PropertyRef Name="OperationKey" />
+          </Key>
+          <Property Name="OperationKey" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SYSTEM_ROLE">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Discriminator" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="SYSTEM_USER_ROLE" Relationship="Self.FK_UserUserRole_UserRole" FromRole="SYSTEM_ROLE" ToRole="SYSTEM_USER_ROLE" />
+        </EntityType>
+        <EntityType Name="SYSTEM_USER">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NT_UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NT_Logon" Type="Boolean" />
+          <Property Name="ExpirePassword" Type="Boolean" />
+          <Property Name="PasswordExpiryDate" Type="DateTime" Precision="0" />
+          <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="EmailHash" Type="String" MaxLength="32" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordSalt" Type="Binary" MaxLength="24" FixedLength="false" />
+          <Property Name="IsApproved" Type="Boolean" />
+          <Property Name="IsLockedOut" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastLoginDate" Type="DateTime" Precision="3" />
+          <Property Name="LastActivityDate" Type="DateTime" Precision="3" />
+          <Property Name="LastPasswordChangedDate" Type="DateTime" Precision="3" />
+          <Property Name="LastLockoutDate" Type="DateTime" Precision="3" />
+          <Property Name="FailedPasswordAttemptCount" Type="Int32" />
+          <Property Name="FailedPasswordAttemptWindowStart" Type="DateTime" Precision="3" />
+          <Property Name="Comment" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="RegionID" Type="Decimal" Precision="8" Scale="0" />
+          <Property Name="LanguageID" Type="Decimal" Precision="8" Scale="0" />
+          <Property Name="DecimalSeperator" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="DateFormat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Discriminator" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="SYSTEM_USER_LOGIN" Relationship="Self.FK_UserLogin_User" FromRole="SYSTEM_USER" ToRole="SYSTEM_USER_LOGIN" />
+          <NavigationProperty Name="SYSTEM_USER_ROLE" Relationship="Self.FK_UserUserRole_User" FromRole="SYSTEM_USER" ToRole="SYSTEM_USER_ROLE" />
+          <NavigationProperty Name="SYSTEM_USER_CLAIM" Relationship="AspNetDatabaseModel.FK_UserClaim_User" FromRole="SYSTEM_USER" ToRole="SYSTEM_USER_CLAIM" />
+        </EntityType>
+        <EntityType Name="SYSTEM_USER_LOGIN">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+          </Key>
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LoginProvider" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProviderKey" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastUsedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="SYSTEM_USER" Relationship="Self.FK_UserLogin_User" FromRole="SYSTEM_USER_LOGIN" ToRole="SYSTEM_USER" />
+        </EntityType>
+        <EntityType Name="SYSTEM_USER_ROLE">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RoleId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DateFrom" Type="DateTime" Precision="0" />
+          <Property Name="DateTo" Type="DateTime" Precision="0" />
+          <Property Name="Discriminator" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="SYSTEM_ROLE" Relationship="Self.FK_UserUserRole_UserRole" FromRole="SYSTEM_USER_ROLE" ToRole="SYSTEM_ROLE" />
+          <NavigationProperty Name="SYSTEM_USER" Relationship="Self.FK_UserUserRole_User" FromRole="SYSTEM_USER_ROLE" ToRole="SYSTEM_USER" />
+        </EntityType>
+        <Association Name="FK_UserUserRole_UserRole">
+          <End Role="SYSTEM_ROLE" Type="Self.SYSTEM_ROLE" Multiplicity="1" />
+          <End Role="SYSTEM_USER_ROLE" Type="Self.SYSTEM_USER_ROLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SYSTEM_ROLE">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SYSTEM_USER_ROLE">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserLogin_User">
+          <End Role="SYSTEM_USER" Type="Self.SYSTEM_USER" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SYSTEM_USER_LOGIN" Type="Self.SYSTEM_USER_LOGIN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SYSTEM_USER">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SYSTEM_USER_LOGIN">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserUserRole_User">
+          <End Role="SYSTEM_USER" Type="Self.SYSTEM_USER" Multiplicity="1" />
+          <End Role="SYSTEM_USER_ROLE" Type="Self.SYSTEM_USER_ROLE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SYSTEM_USER">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SYSTEM_USER_ROLE">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AspNetDatabaseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
+          <EntitySet Name="C__RefactorLog" EntityType="Self.C__RefactorLog" />
+          <EntitySet Name="SYSTEM_ROLE" EntityType="Self.SYSTEM_ROLE" />
+          <EntitySet Name="SYSTEM_USER" EntityType="Self.SYSTEM_USER" />
+          <EntitySet Name="SYSTEM_USER_LOGIN" EntityType="Self.SYSTEM_USER_LOGIN" />
+          <EntitySet Name="SYSTEM_USER_ROLE" EntityType="Self.SYSTEM_USER_ROLE" />
+          <AssociationSet Name="FK_UserUserRole_UserRole" Association="Self.FK_UserUserRole_UserRole">
+            <End Role="SYSTEM_ROLE" EntitySet="SYSTEM_ROLE" />
+            <End Role="SYSTEM_USER_ROLE" EntitySet="SYSTEM_USER_ROLE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserLogin_User" Association="Self.FK_UserLogin_User">
+            <End Role="SYSTEM_USER" EntitySet="SYSTEM_USER" />
+            <End Role="SYSTEM_USER_LOGIN" EntitySet="SYSTEM_USER_LOGIN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserUserRole_User" Association="Self.FK_UserUserRole_User">
+            <End Role="SYSTEM_USER" EntitySet="SYSTEM_USER" />
+            <End Role="SYSTEM_USER_ROLE" EntitySet="SYSTEM_USER_ROLE" />
+          </AssociationSet>
+          <EntitySet Name="SYSTEM_USER_CLAIM" EntityType="AspNetDatabaseModel.SYSTEM_USER_CLAIM" />
+          <AssociationSet Name="FK_UserClaim_User" Association="AspNetDatabaseModel.FK_UserClaim_User">
+            <End Role="SYSTEM_USER" EntitySet="SYSTEM_USER" />
+            <End Role="SYSTEM_USER_CLAIM" EntitySet="SYSTEM_USER_CLAIM" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="SYSTEM_USER_CLAIM">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="SYSTEM_USER" Relationship="AspNetDatabaseModel.FK_UserClaim_User" FromRole="SYSTEM_USER_CLAIM" ToRole="SYSTEM_USER" />
+        </EntityType>
+        <Association Name="FK_UserClaim_User">
+          <End Type="AspNetDatabaseModel.SYSTEM_USER" Role="SYSTEM_USER" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="AspNetDatabaseModel.SYSTEM_USER_CLAIM" Role="SYSTEM_USER_CLAIM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SYSTEM_USER">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SYSTEM_USER_CLAIM">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AspNetDatabaseModelStoreContainer" CdmEntityContainer="AspNetDatabaseEntities">
+          <EntitySetMapping Name="C__MigrationHistory">
+            <EntityTypeMapping TypeName="AspNetDatabaseModel.C__MigrationHistory">
+              <MappingFragment StoreEntitySet="__MigrationHistory">
+                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="C__RefactorLog">
+            <EntityTypeMapping TypeName="AspNetDatabaseModel.C__RefactorLog">
+              <MappingFragment StoreEntitySet="__RefactorLog">
+                <ScalarProperty Name="OperationKey" ColumnName="OperationKey" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYSTEM_ROLE">
+            <EntityTypeMapping TypeName="AspNetDatabaseModel.SYSTEM_ROLE">
+              <MappingFragment StoreEntitySet="SYSTEM_ROLE">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Discriminator" ColumnName="Discriminator" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYSTEM_USER">
+            <EntityTypeMapping TypeName="AspNetDatabaseModel.SYSTEM_USER">
+              <MappingFragment StoreEntitySet="SYSTEM_USER">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="NT_UserName" ColumnName="NT_UserName" />
+                <ScalarProperty Name="NT_Logon" ColumnName="NT_Logon" />
+                <ScalarProperty Name="ExpirePassword" ColumnName="ExpirePassword" />
+                <ScalarProperty Name="PasswordExpiryDate" ColumnName="PasswordExpiryDate" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="EmailHash" ColumnName="EmailHash" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="IsLockedOut" ColumnName="IsLockedOut" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="LastLoginDate" ColumnName="LastLoginDate" />
+                <ScalarProperty Name="LastActivityDate" ColumnName="LastActivityDate" />
+                <ScalarProperty Name="LastPasswordChangedDate" ColumnName="LastPasswordChangedDate" />
+                <ScalarProperty Name="LastLockoutDate" ColumnName="LastLockoutDate" />
+                <ScalarProperty Name="FailedPasswordAttemptCount" ColumnName="FailedPasswordAttemptCount" />
+                <ScalarProperty Name="FailedPasswordAttemptWindowStart" ColumnName="FailedPasswordAttemptWindowStart" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+                <ScalarProperty Name="LanguageID" ColumnName="LanguageID" />
+                <ScalarProperty Name="DecimalSeperator" ColumnName="DecimalSeperator" />
+                <ScalarProperty Name="DateFormat" ColumnName="DateFormat" />
+                <ScalarProperty Name="Discriminator" ColumnName="Discriminator" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYSTEM_USER_LOGIN">
+            <EntityTypeMapping TypeName="AspNetDatabaseModel.SYSTEM_USER_LOGIN">
+              <MappingFragment StoreEntitySet="SYSTEM_USER_LOGIN">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="LastUsedDate" ColumnName="LastUsedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYSTEM_USER_ROLE">
+            <EntityTypeMapping TypeName="AspNetDatabaseModel.SYSTEM_USER_ROLE">
+              <MappingFragment StoreEntitySet="SYSTEM_USER_ROLE">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="DateFrom" ColumnName="DateFrom" />
+                <ScalarProperty Name="DateTo" ColumnName="DateTo" />
+                <ScalarProperty Name="Discriminator" ColumnName="Discriminator" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYSTEM_USER_CLAIM">
+            <EntityTypeMapping TypeName="AspNetDatabaseModel.SYSTEM_USER_CLAIM">
+              <MappingFragment StoreEntitySet="SYSTEM_USER_CLAIM">
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

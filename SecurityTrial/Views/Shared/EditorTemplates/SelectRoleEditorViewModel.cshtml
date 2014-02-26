@@ -1,0 +1,39 @@
+﻿@model SecurityTrial.Models.SelectRoleEditorViewModel
+
+@Html.HiddenFor(model => model.RoleName)
+<tr>
+    <td style="text-align:center">
+        @Html.CheckBoxFor(model => model.Selected)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.RoleName)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.Description)
+    </td>
+    <td>
+        @Html.EditorFor(model =>  model.DATE_FROM)
+        @Html.ValidationMessageFor(m => m.DATE_FROM)
+    </td>
+    <td>
+        @Html.EditorFor(model => model.DATE_TO)
+        @Html.ValidationMessageFor(m => m.DATE_TO)
+    </td>
+</tr>
+
+
+@*
+    how to trick browsers to use jquery datepicker but touch device native html5 support
+
+    <input type="text" id="myDate" />
+*@
+<script>
+    $(document).ready(function () {
+        $.datepicker.setDefaults({ dateFormat: "yy-mm-dd" });
+
+        //add datepicker to all input type=Date and then change it to text to fool browsers
+        if (!(Modernizr.touch && Modernizr.inputtypes.date)) {
+            $('input[type="date"]').datepicker().prop('type', 'text');
+        }
+    });
+</script>
