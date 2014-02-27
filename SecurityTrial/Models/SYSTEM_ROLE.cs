@@ -18,14 +18,9 @@ namespace SecurityTrial.Models
         {
             this.SYSTEM_USER_ROLE = new HashSet<SYSTEM_USER_ROLE>();
         }
-        public SYSTEM_ROLE(string name, string description)
-            : base(name)
-        {
-            this.Description = description;
-        }
     
-        //public string Id { get; set; }
-        //public string Name { get; set; }
+        public string Id { get; set; }
+        public string Name { get; set; }
         public string Description { get; set; }
         public string Discriminator { get; set; }
     

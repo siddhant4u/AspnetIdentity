@@ -25,12 +25,10 @@ namespace SecurityTrial.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
-        public virtual DbSet<C__RefactorLog> C__RefactorLog { get; set; }
         public virtual DbSet<SYSTEM_ROLE> SYSTEM_ROLE { get; set; }
         public virtual DbSet<SYSTEM_USER> SYSTEM_USER { get; set; }
+        public virtual DbSet<SYSTEM_USER_CLAIM> SYSTEM_USER_CLAIM { get; set; }
         public virtual DbSet<SYSTEM_USER_LOGIN> SYSTEM_USER_LOGIN { get; set; }
         public virtual DbSet<SYSTEM_USER_ROLE> SYSTEM_USER_ROLE { get; set; }
-        public virtual DbSet<SYSTEM_USER_CLAIM> SYSTEM_USER_CLAIM { get; set; }
     }
 }

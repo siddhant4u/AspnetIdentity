@@ -16,13 +16,13 @@ namespace SecurityTrial.Models
     {
         public SYSTEM_USER()
         {
+            this.SYSTEM_USER_CLAIM = new HashSet<SYSTEM_USER_CLAIM>();
             this.SYSTEM_USER_LOGIN = new HashSet<SYSTEM_USER_LOGIN>();
             this.SYSTEM_USER_ROLE = new HashSet<SYSTEM_USER_ROLE>();
-            this.SYSTEM_USER_CLAIM = new HashSet<SYSTEM_USER_CLAIM>();
         }
     
-        //public string Id { get; set; }
-        //public string UserName { get; set; }
+        public string Id { get; set; }
+        public string UserName { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
@@ -32,7 +32,7 @@ namespace SecurityTrial.Models
         public Nullable<System.DateTime> PasswordExpiryDate { get; set; }
         public string Email { get; set; }
         public string EmailHash { get; set; }
-       // public string PasswordHash { get; set; }
+        public string PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         public Nullable<bool> IsApproved { get; set; }
         public Nullable<bool> IsLockedOut { get; set; }
@@ -49,10 +49,10 @@ namespace SecurityTrial.Models
         public string DecimalSeperator { get; set; }
         public string DateFormat { get; set; }
         public string Discriminator { get; set; }
-        //public string SecurityStamp { get; set; }
+        public string SecurityStamp { get; set; }
     
+        public virtual ICollection<SYSTEM_USER_CLAIM> SYSTEM_USER_CLAIM { get; set; }
         public virtual ICollection<SYSTEM_USER_LOGIN> SYSTEM_USER_LOGIN { get; set; }
         public virtual ICollection<SYSTEM_USER_ROLE> SYSTEM_USER_ROLE { get; set; }
-        public virtual ICollection<SYSTEM_USER_CLAIM> SYSTEM_USER_CLAIM { get; set; }
     }
 }

@@ -4,18 +4,16 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="059105daa7df4a8799ed1bb09695f441" Name="Diagram1" ZoomLevel="87">
-        <EntityTypeShape EntityType="AspNetDatabaseModel.C__MigrationHistory" Width="1.5" PointX="5.75" PointY="2.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="AspNetDatabaseModel.C__RefactorLog" Width="1.5" PointX="7.75" PointY="2.125" IsExpanded="true" />
+      <Diagram DiagramId="82397189d2a14557bafaf3e91535863c" Name="Diagram1">
         <EntityTypeShape EntityType="AspNetDatabaseModel.SYSTEM_ROLE" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AspNetDatabaseModel.SYSTEM_USER" Width="1.5" PointX="0.75" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AspNetDatabaseModel.SYSTEM_USER_CLAIM" Width="1.5" PointX="3" PointY="4.25" IsExpanded="true" />
         <EntityTypeShape EntityType="AspNetDatabaseModel.SYSTEM_USER_LOGIN" Width="1.5" PointX="3" PointY="6.875" IsExpanded="true" />
         <EntityTypeShape EntityType="AspNetDatabaseModel.SYSTEM_USER_ROLE" Width="1.5" PointX="6" PointY="5.5" IsExpanded="true" />
         <AssociationConnector Association="AspNetDatabaseModel.FK_UserUserRole_UserRole" ManuallyRouted="false" />
+        <AssociationConnector Association="AspNetDatabaseModel.FK_UserClaim_User" ManuallyRouted="false" />
         <AssociationConnector Association="AspNetDatabaseModel.FK_UserLogin_User" ManuallyRouted="false" />
         <AssociationConnector Association="AspNetDatabaseModel.FK_UserUserRole_User" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="AspNetDatabaseModel.SYSTEM_USER_CLAIM" Width="1.5" PointX="3" PointY="3.75" />
-        <AssociationConnector Association="AspNetDatabaseModel.FK_UserClaim_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

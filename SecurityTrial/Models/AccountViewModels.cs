@@ -187,7 +187,7 @@ namespace SecurityTrial.Models
             var dbUser = um.FindById(user.Id);
             
             // Add all available roles to the list of EditorViewModels:
-            var allRoles = Db.SYSTEM_ROLEs;
+            var allRoles = Db.Roles;
             
            
             foreach (var role in allRoles)

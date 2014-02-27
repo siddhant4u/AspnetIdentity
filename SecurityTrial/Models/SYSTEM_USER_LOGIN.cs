@@ -14,9 +14,9 @@ namespace SecurityTrial.Models
     
     public partial class SYSTEM_USER_LOGIN
     {
-        //public string UserId { get; set; }
-        //public string LoginProvider { get; set; }
-        //public string ProviderKey { get; set; }
+        public string UserId { get; set; }
+        public string LoginProvider { get; set; }
+        public string ProviderKey { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
         public Nullable<System.DateTime> LastUsedDate { get; set; }

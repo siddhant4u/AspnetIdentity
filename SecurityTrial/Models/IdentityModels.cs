@@ -14,7 +14,9 @@ namespace SecurityTrial.Models
     //which includes the methods required to create new users, and add/remove users from available roles.
 
     public partial class SYSTEM_USER : IdentityUser
-    { }
+    {
+      
+    }
     public partial class SYSTEM_ROLE : IdentityRole
     { }
     public partial class SYSTEM_USER_ROLE : IdentityUserRole
@@ -60,7 +62,7 @@ namespace SecurityTrial.Models
         {
 
 
-            var idResult = _userManager.AddToRole(userId, roleName.RoleName);
+            //var idResult = _userManager.AddToRole(userId, roleName.RoleName);
              
             //add new role
             var userRole = new SYSTEM_USER_ROLE
@@ -86,17 +88,13 @@ namespace SecurityTrial.Models
             var currentRoles = new List<SYSTEM_USER_ROLE>();
             currentRoles.AddRange(user.SYSTEM_USER_ROLE);
 
-            var roles = user.Roles;
+            var roles = user.SYSTEM_USER_ROLE;
 
 
             foreach (var role in currentRoles)
             {
-
-                _db.SYSTEM_USER_ROLEs.Attach(role);
-
-                _db.SYSTEM_USER_ROLEs.Remove(role);
-
-                //var result = um.RemoveFromRole(userId, role.RoleId);
+                 
+                var result = _userManager.RemoveFromRole(userId, role.SYSTEM_ROLE.Name);
                 //user.SYSTEM_USER_ROLE.Remove(role);
 
             }
@@ -106,6 +104,8 @@ namespace SecurityTrial.Models
 
     public class ApplicationDbContext : IdentityDbContext<SYSTEM_USER>
     {
+        new public virtual IDbSet<SYSTEM_ROLE> Roles { get; set; }
+        public DbSet<SYSTEM_USER_ROLE> SYSTEM_USER_ROLEs { get; set; }
         public ApplicationDbContext()
             : base("AspNetDatabaseEntities")
         {
@@ -114,66 +114,21 @@ namespace SecurityTrial.Models
         {
             base.OnModelCreating(modelBuilder);
 
-
-
-            //modelBuilder.Entity<IdentityUser>().ToTable("SYSTEM_USER");
-            //modelBuilder.Entity<SYSTEM_USER>().ToTable("SYSTEM_USER");
-            //modelBuilder.Entity<IdentityUserRole>().ToTable("SYSTEM_USER_ROLE").Property(t => t.RoleId).HasColumnName("RoleId");
-            //modelBuilder.Entity<SYSTEM_USER_ROLE>().ToTable("SYSTEM_USER_ROLE");
-
+            modelBuilder.Entity<IdentityUser>()
+              .ToTable("SYSTEM_USER", "dbo").Property(p => p.Id).HasColumnName("USER_ID");
+            modelBuilder.Entity<SYSTEM_USER>()
+                .ToTable("SYSTEM_USER", "dbo").Property(p => p.Id).HasColumnName("USER_ID");
+            modelBuilder.Entity<IdentityUserRole>().ToTable("SYSTEM_USER_ROLE");
+            modelBuilder.Entity<SYSTEM_USER_ROLE>().ToTable("SYSTEM_USER_ROLE");
             modelBuilder.Entity<IdentityUserLogin>().ToTable("SYSTEM_USER_LOGIN");
-            //modelBuilder.Entity<SYSTEM_USER_LOGIN>().ToTable("SYSTEM_USER_LOGIN");
-            //modelBuilder.Entity<SYSTEM_USER_CLAIM>().ToTable("SYSTEM_USER_CLAIM");
-            modelBuilder.Entity<IdentityUserClaim>().ToTable("SYSTEM_USER_CLAIM");
-            
-            //modelBuilder.Entity<SYSTEM_ROLE>().ToTable("SYSTEM_ROLE");
-
-
-            var user = modelBuilder.Entity<IdentityUser>().ToTable("SYSTEM_USER");
-            user.HasMany(u => u.Roles).WithRequired().HasForeignKey(ur => ur.UserId);
-            user.HasMany(u => u.Claims).WithRequired().HasForeignKey(uc => uc.Id);
-            user.HasMany(u => u.Logins).WithRequired().HasForeignKey(ul => ul.UserId);
-            user.Property(u => u.UserName).IsRequired();
-
-
+            modelBuilder.Entity<IdentityUserClaim>().ToTable("SYSTEM_USER_CLAIMS");
             modelBuilder.Entity<IdentityRole>().ToTable("SYSTEM_ROLE");
-            var role = modelBuilder.Entity<SYSTEM_ROLE>()
-               .ToTable("SYSTEM_ROLE");
-            role.Property(r => r.Name).IsRequired();
+            modelBuilder.Entity<SYSTEM_ROLE>().ToTable("SYSTEM_ROLE");
 
-            modelBuilder.Entity<SYSTEM_USER>().HasMany<IdentityUserRole>((SYSTEM_USER u) => u.Roles);
-           
-            modelBuilder.Entity<IdentityUserRole>().HasKey((IdentityUserRole r) =>
-                new { UserId = r.UserId, RoleId = r.RoleId }).ToTable("SYSTEM_USER_ROLE");
-
-
-            modelBuilder.Entity<SYSTEM_USER_ROLE>().HasKey((SYSTEM_USER_ROLE r) =>
-                new { UserId = r.UserId, RoleId = r.RoleId }).ToTable("SYSTEM_USER_ROLE");
             
-            ////modelBuilder.Entity<SYSTEM_USER_ROLE>()
-            ////    .HasKey(r => new { r.UserId, r.RoleId })
-            ////    .ToTable("SYSTEM_USER_ROLE");
-
-
-
-            ////modelBuilder.Entity<IdentityUserLogin>()
-            ////    .HasKey(l => new { l.UserId, l.LoginProvider, l.ProviderKey })
-            ////    .ToTable("SYSTEM_USER_LOGIN");
-
-           
-            ////role.HasMany(r => r.SYSTEM_USER_ROLE).WithRequired().HasForeignKey(ur => ur.RoleId);
-
-
-            //modelBuilder.Entity<Product>()
-            //.HasMany(x => x.ProductPriceList) // Product has many ProductPricings
-            //.WithRequired(y => y.Product)     // ProductPricing has required Product
-            //.Map(m => m.MapKey("ProductId")); // Map FK in database to ProductId column
 
         }
-        new public virtual IDbSet<SYSTEM_ROLE> Roles { get; set; }
-        public DbSet<SYSTEM_USER_ROLE> SYSTEM_USER_ROLEs { get; set; }
-
-        public DbSet<SYSTEM_ROLE> SYSTEM_ROLEs { get; set; }
+       
 
     }
 }
